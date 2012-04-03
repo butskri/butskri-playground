@@ -26,6 +26,7 @@ public class VreemdelingIdReader implements ItemReader<Long> {
 		this.jdbcTemplate.setMaxRows(maxPageSize + 1);
 	}
 
+	@Override
 	public Long read() throws Exception, UnexpectedInputException, ParseException {
 		if (nextIdsToBeFetched()) {
 			fetchNextIds();

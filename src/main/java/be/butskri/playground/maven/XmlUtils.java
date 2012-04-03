@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.SingleValueConverter;
 import com.thoughtworks.xstream.mapper.MapperWrapper;
 
 public class XmlUtils {
@@ -22,6 +23,7 @@ public class XmlUtils {
 			@Override
 			protected MapperWrapper wrapMapper(MapperWrapper next) {
 				return new MapperWrapper(next) {
+					@SuppressWarnings("rawtypes") 
 					@Override
 					public boolean shouldSerializeMember(Class definedIn, String fieldName) {
 						// if (Project.class.equals(definedIn)) {
@@ -46,6 +48,26 @@ public class XmlUtils {
 		};
 		xstream.alias("project", Project.class);
 		xstream.alias("dependency", Dependency.class);
+		xstream.alias("module", Module.class);
+		SingleValueConverter converter = new SingleValueConverter() {
+			
+			@Override
+			@SuppressWarnings("rawtypes") 
+			public boolean canConvert(Class type) {
+				return Module.class.equals(type);
+			}
+			
+			@Override
+			public String toString(Object obj) {
+				return Module.class.cast(obj).getPath();
+			}
+			
+			@Override
+			public Object fromString(String str) {
+				return new Module(str);
+			}
+		};
+		xstream.registerConverter(converter);
 	}
 
 	public Project loadProject(File pomFile) {

@@ -13,6 +13,7 @@ public class Project {
 	private String name;
 	private String url;
 	private List<Dependency> dependencies;
+	private List<Module> modules;
 
 	public Dependency getParent() {
 		return parent;
@@ -84,6 +85,14 @@ public class Project {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	
+	public List<Module> getModules() {
+		return modules;
+	}
+	
+	public void setModules(List<Module> modules) {
+		this.modules = modules;
 	}
 
 }
